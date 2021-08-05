@@ -152,3 +152,24 @@ export const addFavorite = campsiteId => ({
     type: ActionTypes.ADD_FAVORITE,
     payload: campsiteId
 });
+
+export const deleteFavorite = campsiteId => ({
+    type: ActionTypes.DELETE_FAVORITE,
+    payload: campsiteId
+});
+
+export const postComment = ([campsiteId, rating, author, text], dispatch) => {
+    const newComment = {
+        campsiteId,
+        rating,
+        author,
+        text,
+        //date = () => Date.toISOString()   -->Not sure how to fix this
+    };
+};
+
+export const addComment = comment => ({
+    type: ActionTypes.ADD_COMMENT,
+    payload: newComment
+});
+

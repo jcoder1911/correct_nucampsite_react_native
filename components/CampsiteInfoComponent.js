@@ -3,7 +3,7 @@ import { Text, View, ScrollView, FlatList, Modal, Button, StyleSheet, SafeAreaVi
 import { Card, Icon, Rating, Input } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
-import { postFavorite } from '../redux/ActionCreators';
+import { postFavorite, postComment } from '../redux/ActionCreators';
 
 const mapStateToProps = state => {
     return {
@@ -15,6 +15,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
     postFavorite: campsiteId => (postFavorite(campsiteId))
+   // postComment: (campsiteId, rating, author, text) => (postComment(campsiteId, rating, author, text));
 };
 
 function RenderCampsite(props) {
@@ -60,7 +61,14 @@ function RenderComments({comments}) {
         return(
             <View style={{margin: 10}}>
                 <Text style={{fontSize: 14}}>{item.text}</Text>
-                <Text style={{fontSize: 12}}><Rating /></Text>
+                <Rating style={{fontSize: 12}} 
+                    startingValue={rating => this.state({rating})}
+                    imageSize={10}
+                    style={{
+                        alignItems: 'flex-start',
+                        paddingVertical: '5%',
+                    }}>{item.rating}
+                </Rating>
                 <Text style={{fontSize: 12}}>{`-- ${item.author}, ${item.date}`}</Text>
             </View>
         );
@@ -107,7 +115,7 @@ class CampsiteInfo extends Component {
     }
 
     markFavorite(campsiteId) {
-        this.props.postFavorite({campsiteId});
+        this.props.postFavorite(campsiteId);
     }
 
     static navigationOptions = {
