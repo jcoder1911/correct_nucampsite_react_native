@@ -23,14 +23,12 @@ class Contact extends Component {
             <ScrollView>
                 <Animatable.View animation='fadeInDown' duration={2000} delay={1000}>
                     <Card title="Contact Information">
-                        <Text>
-                        1 Nucamp Way
-                                Seattle, WA 98001
-                                U.S.A.
-
-                                Phone: 1-206-555-1234
-                                Email: campsites@nucamp.co
-                        </Text>
+                        <Text>1 Nucamp Way</Text>
+                        <Text>Seattle, WA 98001</Text>
+                        <Text style={{marginBottom: 10}}>U.S.A.</Text>
+                        <Text>Phone: 1-206-555-1234</Text>
+                        <Text>Email: campsites@nucamp.co</Text>
+                
                         <Button
                             title="Send Email"
                             buttonStyle={{backgroundColor: '#5637DD', margin: 40}}
