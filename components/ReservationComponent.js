@@ -3,6 +3,7 @@ import { Text, View, ScrollView, StyleSheet, Picker, Switch, Button, Alert } fro
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import * as Animatable from 'react-native-animatable';
+import * as Notifications from 'expo-notifications';
 
 class Reservation extends Component {
 
@@ -34,6 +35,32 @@ class Reservation extends Component {
             showCalendar: false,
 
         });
+    }
+
+    async presentLocalNotification(date) {
+        function sendNotification() {
+            Notifications.setNotificationHandler({
+                handleNotification: async () => ({
+                    shouldShowAlert: true
+                })
+            });
+
+            Notifications.scheduleNotificationAsync({
+                content: {
+                    title: 'Your Campsite Reservation Search',
+                    body: `Search for ${date} requested`
+                },
+                trigger: null
+            });
+        }
+
+        let permissions = await Notifications.getPermissionsAsync();
+        if (!permissions.granted) {
+            permissions = await Notifications.requestPermissionsAsync();
+        }
+        if (permissions.granted) {
+            sendNotification();
+        }
     }
 
     render() {
@@ -103,14 +130,19 @@ class Reservation extends Component {
                                             {
                                                 text: 'Cancel',
                                                 style: 'close',
-                                                onPress: () =>
-                                                this.resetForm
+                                                onPress: () => {
+                                                    console.log('Reservation Search Cancelled');
+                                                    this.resetForm();
+                                                },
+                                                style: 'cancel'
                                             },
                                             {
                                                 text: 'Ok',
                                                 style: 'close',
-                                                onPress: () =>
-                                                this.resetForm
+                                                onPress: () => {
+                                                    this.presentLocalNotification(this.state.date.toLocaleDateString('en-US'));
+                                                    this.resetForm();
+                                                }                            
                                             }
                                                 
                                         ],
@@ -128,46 +160,6 @@ class Reservation extends Component {
 );
 }
 }
-
-                                    // onPress={() =>
-                                    // Alert.alert
-                                    
-                                    
-                                    
-                                    
-                                    
-                                   // (
-                                    //     'Search Campsite Reservations'
-                                         
-                                    //     [
-                                    //         {
-                                                
-                                    //             'Number of Campers: ' {this.state.campers}
-                                            
-                                    //         }
-                                    //         {
-                                            
-                                    //             'Hike-In?: ' {this.state.hikeIn ? 'Yes' : 'No'}
-                                            
-                                    //         }
-                                            
-                                    //         {
-                                    //             Date: {this.state.date.toLocaleDateString('en-US')}
-                                            
-                                    //         }
-                                    //         {
-                                    //             text: 'Close',
-                                    //             onPress: () =>
-                                    //                 this.resetForm();
-                                                
-                                    //             color='#5637DD'
-                                    //             title='Close'
-                                    //         }
-                                    //     ]
-                                    // )} 
-                        //</View>
-                            
-
 
 
 const styles = StyleSheet.create({
